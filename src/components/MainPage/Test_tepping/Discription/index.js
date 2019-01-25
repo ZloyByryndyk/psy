@@ -14,20 +14,33 @@ export default class Discription extends React.Component {
             s4: 0,
             s5: 0,
         },
-        curentSpinner:0,
+        curentSpinner: 0,
+        isStarted:false,
     }
 
     hendlerStartTimer = () => {
         const time = this.state.timer
 
-        this.setState({ status: time }, () => {
+        this.setState({ status: time, isStarted:true}, () => {
             this.tic()     
         })
     }
 
     tic = () => {
 
+        const countKeys = Object.keys(this.state.counts).length;
+
         if (this.timer) return;
+        console.log(this.state.curentSpinner, countKeys ) 
+        if (this.state.curentSpinner === countKeys) {
+            this.setState({
+                status: 'Интерпретация',
+            }) 
+            return;
+        }
+
+
+
         this.timer = setInterval(() => {
             const time = this.state.timer
             const currentTimer = time - 1;
@@ -37,20 +50,17 @@ export default class Discription extends React.Component {
                     if (time <= 1) {
                         clearInterval(this.timer)
                         delete this.timer;
+                        this.setState({isStarted:false})
                         console.log(this.state.counts)
-                        const countKeys = Object.keys(this.state.counts).length;
+                        
                         const currentSpinner = this.state.curentSpinner;
                         
-                        if (countKeys - 1 > currentSpinner) {
+                        if (countKeys > currentSpinner) {
                             this.setState({
                                 timer: 5,
                                 status: 'Старт',
                                 curentSpinner: currentSpinner + 1,
                             }) 
-                        }
-                        if (currentSpinner + 1 > countKeys) {
-                                console.log(currentSpinner,countKeys)
-                                this.props.switchPage(0)
                         }
                     }
             })
@@ -58,15 +68,24 @@ export default class Discription extends React.Component {
     }
 
     clicker = () => {
-        const { counts, curentSpinner, timer} = this.state
+        const { counts, curentSpinner, timer, isStarted} = this.state
         
-        if (timer <=0)  return;
+        if (timer <=0 || !isStarted)  return;
         counts[`s${curentSpinner}`] = counts[`s${curentSpinner}`]+1
-        this.setState (counts)
+        this.setState(counts)
+    }
+
+    onPress = () => {
+        console.log(this.props)
+        this.props.saveCountsTepping(this.state.counts)
+        this.props.history.push("/charts")    
     }
 
     render() {
         const { counts, curentSpinner } = this.state
+        
+        const countKeys = Object.keys(this.state.counts).length;
+
         return (
             <View style={styles.container}>
                 <Image
@@ -83,7 +102,11 @@ export default class Discription extends React.Component {
                 </View>
                 <View><Text>{counts[`s${curentSpinner}`]}</Text></View>
                 <View style={styles.box2}>
-                    <Text style={styles.timer} onPress={this.hendlerStartTimer}>{this.state.status}</Text>
+                    <Text
+                        style={styles.timer}
+                        onPress={curentSpinner === countKeys? this.onPress: this.hendlerStartTimer}
+                    >{this.state.status}
+                    </Text>
                 </View>
                 <View style={styles.box3}>
                     <Button
