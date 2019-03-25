@@ -6,85 +6,79 @@ export default class Discription extends React.Component {
     state = {
         status: 'Старт',
         timer: 5,
+        globalTimer: 30,
         counts: {
-            s0: 0,
-            s1: 0,
-            s2: 0,
-            s3: 0,
-            s4: 0,
-            s5: 0,
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
         },
         curentSpinner: 0,
         isStarted:false,
     }
 
     hendlerStartTimer = () => {
-        const time = this.state.timer
-
-        this.setState({ status: time, isStarted:true}, () => {
-            this.tic()     
+        this.setState({ status: this.state.timer, isStarted: true }, () => {
+            this.tic()
         })
     }
 
     tic = () => {
-
-        const countKeys = Object.keys(this.state.counts).length;
-
-        if (this.timer) return;
-        console.log(this.state.curentSpinner, countKeys ) 
-        if (this.state.curentSpinner === countKeys) {
+        this.timerId = setInterval(() => {
+            if (this.state.globalTimer <= 0) return clearInterval(this.timerId);
+            
+            const isLess = (this.state.timer - 1) <= 0;
+            const newTime = isLess ? 5 : this.state.timer - 1;
             this.setState({
-                status: 'Интерпретация',
-            }) 
-            return;
-        }
-
-
-
-        this.timer = setInterval(() => {
-            const time = this.state.timer
-            const currentTimer = time - 1;
-
-            this.setState({ timer: currentTimer, status: currentTimer },
-                () => {
-                    if (time <= 1) {
-                        clearInterval(this.timer)
-                        delete this.timer;
-                        this.setState({isStarted:false})
-                        console.log(this.state.counts)
-                        
-                        const currentSpinner = this.state.curentSpinner;
-                        
-                        if (countKeys > currentSpinner) {
-                            this.setState({
-                                timer: 5,
-                                status: 'Старт',
-                                curentSpinner: currentSpinner + 1,
-                            }) 
-                        }
-                    }
+                timer: newTime,
+                globalTimer: this.state.globalTimer - 1,
+                status: (this.state.globalTimer - 1) <= 0 ? 'over' : newTime,
+                curentSpinner: isLess ? this.state.curentSpinner + 1 : this.state.curentSpinner,
             })
-        }, 1000)
+        }, 1000);
     }
 
     clicker = () => {
-        const { counts, curentSpinner, timer, isStarted} = this.state
-        
-        if (timer <=0 || !isStarted)  return;
-        counts[`s${curentSpinner}`] = counts[`s${curentSpinner}`]+1
-        this.setState(counts)
+        if (this.state.globalTimer <= 0 || !this.state.isStarted) return;
+        this.setState({
+            counts: {
+            ...this.state.counts,
+            [this.state.curentSpinner]: this.state.counts[this.state.curentSpinner] + 1
+            }
+        });
     }
 
     onPress = () => {
         console.log(this.props)
-        this.props.saveCountsTepping(this.state.counts)
+
+        const arr = Object.values(this.state.counts) 
+        
+        this.props.saveCountsTepping(arr)
         this.props.history.push("/charts")    
     }
-
+    getStyle = (index) => {
+        const commonStyle = styles.slot;
+        if (!this.state.isStarted) return commonStyle;
+        
+        if (index*5 <= 30 - this.state.globalTimer) {
+        commonStyle.backgroundColor = 'red';
+        } else {
+        commonStyle;
+        }
+        return commonStyle;
+    }
+    hendlerClick = () => {
+        this.props.history.push("/charts")
+    }
+    
     render() {
         const { counts, curentSpinner } = this.state
         
         const countKeys = Object.keys(this.state.counts).length;
+
+        const numbers = [1, 2, 3, 4, 5, 6];
 
         return (
             <View style={styles.container}>
@@ -93,14 +87,13 @@ export default class Discription extends React.Component {
                     source={require('../../../../image/page1.jpg')}
                 />
                 <View style={styles.box1}>
-                    <Text style={styles.slot}>1</Text>
-                    <Text style={styles.slot}>2</Text>
-                    <Text style={styles.slot}>3</Text>
-                    <Text style={styles.slot}>4</Text>
-                    <Text style={styles.slot}>5</Text>
-                    <Text style={styles.slot}>6</Text>
+                    {numbers.map((number, index) => (
+                        <Text style={this.getStyle(index)}>
+                            {number}
+                        </Text>
+                    ))}
                 </View>
-                <View><Text>{counts[`s${curentSpinner}`]}</Text></View>
+                <View><Text style={styles.textView}>{counts[curentSpinner]}</Text></View>
                 <View style={styles.box2}>
                     <Text
                         style={styles.timer}
@@ -113,6 +106,13 @@ export default class Discription extends React.Component {
                         buttonStyle={styles.click}
                         title='' 
                         onPress={this.clicker}
+                    />
+                </View>
+                <View>
+                    <Button
+                    buttonStyle={styles.next}
+                    title='костыль'
+                    onPress={this.hendlerClick}
                     />
                 </View>
             </View>
@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     }, 
     slot: {
         backgroundColor: '#FF8E00',
+        marginTop: 10,
         padding: 10,
         color: 'white',
         borderColor: 'black',
@@ -179,5 +180,17 @@ const styles = StyleSheet.create({
         width: '90%',
         height: '70%',
         borderRadius: 10,
+    },
+    textView: {
+        fontSize: 22,
+    },
+    next: {
+        backgroundColor: '#FF8E00',
+        padding: 10,
+        color: 'white',
+        borderColor: 'black',
+        borderWidth: 2,
+        margin: 15,
+        height: 50,
     },
   });

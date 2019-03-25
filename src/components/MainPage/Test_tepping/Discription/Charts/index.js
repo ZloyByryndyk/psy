@@ -9,10 +9,9 @@ export default class Charts extends React.Component {
         const line = [];
         const strong = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
 
-        for (let i in counts_tepping) {
-            line.push (counts_tepping[i])
-        }
-        console.log(line);
+        counts_tepping.forEach(element => {
+            line.push(element)
+        });
         
         return (
             <View style={styles.container}>

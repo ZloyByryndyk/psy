@@ -26,9 +26,8 @@ export default class App extends React.Component {
             <Route exact path="/" component={LoadingScreen} />
             <Route exact path="/mainpage" component={MainPage} />
             <Route exact path="/test_tepping" component={Test_Tepping} />
-            <Route exact path="/discription" component={Discription} saveCountsTepping={this.saveCountsTepping}/>
-            {/* <Route exact path="/charts" component={Charts} counts_tepping={this.state.counts_tepping}/> */}
-
+            <Route exact path="/discription"  render={props => <Discription saveCountsTepping={this.saveCountsTepping}/>}/>
+            <Route exact path="/charts" render={props => <Charts counts_tepping={this.state.counts_tepping}/>}/>
           </Switch>
         </View>
       </NativeRouter>
