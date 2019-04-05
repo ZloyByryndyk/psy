@@ -60,10 +60,12 @@ export default class Discription extends React.Component {
     }
     getStyle = (index) => {
         const commonStyle = styles.slot;
+        const hoverStyle = styles.hover;
+        
         if (!this.state.isStarted) return commonStyle;
         
         if (index*5 <= 30 - this.state.globalTimer) {
-        commonStyle.backgroundColor = 'red';
+        hoverStyle;
         } else {
         commonStyle;
         }
@@ -80,6 +82,7 @@ export default class Discription extends React.Component {
 
         const numbers = [1, 2, 3, 4, 5, 6];
 
+
         return (
             <View style={styles.container}>
                 <Image
@@ -93,7 +96,7 @@ export default class Discription extends React.Component {
                         </Text>
                     ))}
                 </View>
-                <View><Text style={styles.textView}>{counts[curentSpinner]}</Text></View>
+                <View style={styles.textBox}><Text style={styles.textView}>{counts[curentSpinner]}</Text></View>
                 <View style={styles.box2}>
                     <Text
                         style={styles.timer}
@@ -108,7 +111,7 @@ export default class Discription extends React.Component {
                         onPress={this.clicker}
                     />
                 </View>
-                <View>
+                <View style={styles.box4}>
                     <Button
                     buttonStyle={styles.next}
                     title='костыль'
@@ -122,7 +125,7 @@ export default class Discription extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        
+        height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -130,32 +133,45 @@ const styles = StyleSheet.create({
         // flex: 1,
         flexDirection: 'row',
         width: '100%',
-        height: '15%',
+        height: '10%',
         alignItems: 'center',
         justifyContent: 'center',
     }, 
     box2: {
         // flex: 3,
         width: '100%',
-        height: '35%',
+        height: '30%',
         alignItems: 'center',
         justifyContent: 'center',
     }, 
     box3: {
         // flex: 5,
         width: '100%',
-        height: '50%',
+        height: '40%',
         alignItems: 'center',
         justifyContent: 'center',
     }, 
+    box4: {
+        width: '60%',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
     slot: {
         backgroundColor: '#FF8E00',
-        marginTop: 10,
         padding: 10,
         color: 'white',
         borderColor: 'black',
         borderWidth: 2,
-        margin: 15,
+        margin: 10,
+        height: 50,
+    },
+    hover: {
+        backgroundColor: 'red',
+        padding: 10,
+        color: 'white',
+        borderColor: 'black',
+        borderWidth: 2,
+        margin: 10,
         height: 50,
     },
     timer: {
@@ -182,15 +198,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     textView: {
-        fontSize: 22,
+        fontSize: 32,
+        alignItems: 'center',
+    },
+    textBox: {
+        
+
     },
     next: {
-        backgroundColor: '#FF8E00',
-        padding: 10,
-        color: 'white',
+        width: '60%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'red',
         borderColor: 'black',
         borderWidth: 2,
-        margin: 15,
-        height: 50,
     },
   });

@@ -7,11 +7,16 @@ export default class Charts extends React.Component {
     render() {
         const { counts_tepping } = this.props;
         const line = [];
-        const strong = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+        const strong = [ 11, -33, 23, -15, 22, -31, ]
 
         counts_tepping.forEach(element => {
             line.push(element)
         });
+
+        // const ff =  d3.line()
+        // .x(function(d) { return x(d.date); })
+        // .y(function(d) { return y(d.value); })
+        // .curve(d3.curveCatmullRom.alpha(0.5));
         
         return (
             <View style={styles.container}>
@@ -20,29 +25,35 @@ export default class Charts extends React.Component {
                     source={require('../../../../../image/page1.jpg')}
                 />
                 <View style={styles.section1}>
-                    <LineChart
-                        style={{ height: 200 }}
-                        data={ line }
-                        svg={{ stroke: 'rgb(134, 65, 244)' }}
-                        contentInset={{ top: 20, bottom: 20 }}
-                    >
-                        <Grid/>
-                    </LineChart>
+                    <View style={styles.box2}>
+                        <LineChart
+                            style={{ height: 200 }}
+                            data={ line }
+                            svg={{ stroke: 'rgb(134, 65, 244)' }}
+                            contentInset={{ top: 20, bottom: 20 }}
+                        >
+                            <Grid/>
+                        </LineChart>
+                    </View>
                 </View>
                 <View style={styles.section2}>
-                    <View style={styles.box1}>
-                    <LineChart
-                        style={{ height: 200 }}
-                        data={ strong }
-                        svg={{ stroke: 'rgb(134, 65, 244)' }}
-                        contentInset={{ top: 20, bottom: 20 }}
-                    >
-                        <Grid/>
-                    </LineChart>
+                    <View style={styles.box}>
+                        <LineChart
+                            style={{ height: 180 }}
+                            data={strong}
+                            svg={{
+                                stroke: 'rgb(0, 0, 255)',
+                                strokeWidth: 3,
+                                animate: true,
+                                animationDuration: 500,
+                            }}                          
+                        >
+                            <Grid/>
+                        </LineChart>
                     </View>
-                    <View style={styles.box2}/>
-                    <View style={styles.box3}/>
-                    <View style={styles.box4}/>
+                    <View style={styles.box}/>
+                    <View style={styles.box}/>
+                    <View style={styles.box}/>
                 </View>
             </View>
         )
@@ -63,35 +74,33 @@ const styles = StyleSheet.create({
     section1: {
         width: '100%',
         height: '40%',
-        backgroundColor: 'red',
+        alignItems: "center",
+        justifyContent: "center",
     },
     section2: {
-        width: '100%',  
-        height: '60%',
-        backgroundColor: 'blue',
+        width: 'auto',  
+        height: '55%',
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
         flexWrap: 'wrap',
+        margin: 5,
     },
-    box1: {
+    box: {
         width: "50%",
         height: "50%",
-        backgroundColor: "black"
+        padding: 5,
+        borderColor: 'black',
+        borderWidth: 2,
+        borderRadius: 40,
+    },
+    box2: {
+        width: "80%",
+        height: "80%",
+        padding: 5,
+        borderColor: 'black',
+        borderWidth: 2,
+        borderRadius: 40,
       },
-      box2: {
-        width: "50%",
-        height: "50%",
-        backgroundColor: "green"
-      },
-      box3: {
-        width: "50%",
-        height: "50%",
-        backgroundColor: "yellow"
-      },
-      box4: {
-        width: "50%",
-        height: "50%",   
-        backgroundColor: "pink"
-      },
+     
 })
