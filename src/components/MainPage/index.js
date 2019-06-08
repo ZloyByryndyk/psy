@@ -7,7 +7,7 @@ export default class MainPage extends React.Component {
         heightModal: 0,
     }
     hendlerClick = () => {
-        this.props.history.push("/test_tepping")
+        this.props.history.push("/test_tepp")
     }
     showModalClick = () => {
         const heightModal = this.state.heightModal;

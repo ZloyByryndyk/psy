@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 
-export default class Test_tepping extends React.Component {
+export default class Description extends React.Component {
     hendlerClick = () => {
-            this.props.history.push("/discription")
+            this.props.history.push("/test_tepp")
       }
 
     render() {

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
+import RF from "react-native-responsive-fontsize";
 
-export default class Discription extends React.Component {
+
+export default class test_tepp extends React.Component {
     state = {
         status: 'Старт',
         timer: 5,
@@ -34,7 +36,7 @@ export default class Discription extends React.Component {
             this.setState({
                 timer: newTime,
                 globalTimer: this.state.globalTimer - 1,
-                status: (this.state.globalTimer - 1) <= 0 ? 'over' : newTime,
+                status: (this.state.globalTimer - 1) <= 0 ? 'Next' : newTime,
                 curentSpinner: isLess ? this.state.curentSpinner + 1 : this.state.curentSpinner,
             })
         }, 1000);
@@ -64,12 +66,17 @@ export default class Discription extends React.Component {
         
         if (!this.state.isStarted) return commonStyle;
         
-        if (index*5 <= 30 - this.state.globalTimer) {
-        hoverStyle;
-        } else {
-        commonStyle;
+        // if (index*5 <= 30 - this.state.globalTimer) {
+        // hoverStyle;
+        // } else {
+        // commonStyle;
+        // }
+        // return commonStyle;
+
+        if(this.state.curentSpinner===index){
+            return hoverStyle
         }
-        return commonStyle;
+        return commonStyle
     }
     hendlerClick = () => {
         this.props.history.push("/charts")
@@ -87,8 +94,11 @@ export default class Discription extends React.Component {
             <View style={styles.container}>
                 <Image
                     style={styles.image}
-                    source={require('../../../../image/page1.jpg')}
+                    source={require('../../image/page1.jpg')}
                 />
+                <Text style={styles.numbers}>
+                    {this.state.counts[this.state.curentSpinner]}
+                </Text>
                 <View style={styles.box1}>
                     {numbers.map((number, index) => (
                         <Text style={this.getStyle(index)}>
@@ -96,7 +106,6 @@ export default class Discription extends React.Component {
                         </Text>
                     ))}
                 </View>
-                <View style={styles.textBox}><Text style={styles.textView}>{counts[curentSpinner]}</Text></View>
                 <View style={styles.box2}>
                     <Text
                         style={styles.timer}
@@ -109,13 +118,6 @@ export default class Discription extends React.Component {
                         buttonStyle={styles.click}
                         title='' 
                         onPress={this.clicker}
-                    />
-                </View>
-                <View style={styles.box4}>
-                    <Button
-                    buttonStyle={styles.next}
-                    title='костыль'
-                    onPress={this.hendlerClick}
                     />
                 </View>
             </View>
@@ -151,11 +153,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }, 
-    box4: {
-        width: '60%',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-    },
     slot: {
         backgroundColor: '#FF8E00',
         padding: 10,
@@ -190,6 +187,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         position: 'absolute',
         width: '100%',
+        zIndex: -2,
     },
     click: {
         backgroundColor: '#FF8E00', 
@@ -201,9 +199,12 @@ const styles = StyleSheet.create({
         fontSize: 32,
         alignItems: 'center',
     },
-    textBox: {
-        
-
+    numbers: {
+        position: 'absolute',
+        zIndex: -1,
+        fontSize: RF(50),
+        color: 'rgba(0,0,0,0.3)',
+    
     },
     next: {
         width: '60%',
