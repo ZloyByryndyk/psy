@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 import { LineChart, Grid } from 'react-native-svg-charts';
 import Modal from "react-native-modal";
@@ -10,16 +10,17 @@ export default class Charts extends React.Component {
         isModalVisible: true
     };
     
-    hendlerClick = () => {
+    hendlerClick = async (id) => {
+        await AsyncStorage.setItem("graphId", id)
         this.props.history.push("/interpretation")
     }
 
     render() {
         const { counts_tepping } = this.props;
         const line = [];
-        const convex = [ 3, 4, 6, 5, 4.5, 4, ]
-        const smooth = [ 5, 4.5, 6, 5, 5, 5.5, ]
-        const down = [ 5, 4, 4, 3, 2, 1, ]
+        const convex = [ 4, 4.5, 5.5, 5.2, 5, 4.5, ]
+        const smooth = [ 5, 4.5, 6, 4.5, 6, 4.5, ]
+        const down = [ 5, 4, 4, 3, 2.5, 1.5, ]
         const concave = [ 3, 5, 4, 3, 2, 0, ]
 
         counts_tepping.forEach(element => {
@@ -36,9 +37,9 @@ export default class Charts extends React.Component {
                 <View>
                     <Modal isVisible={this.state.isModalVisible}>
                     <View style={styles.modal}>
-                        <Text>Сравните свой график с представленными и выберете наиболее подходящий просто кликнув на него</Text>
+                        <Text style={styles.textModal}>Сравните свой график с представленными и выберете наиболее подходящий просто кликнув на него.</Text>
                         <TouchableOpacity style={styles.closeButton} onPress={()=>this.setState({isModalVisible:false})}>
-                            <Text>Закрыть</Text>
+                            <Text textModal>Закрыть</Text>
                         </TouchableOpacity>
                     </View>
                     </Modal>
@@ -59,7 +60,7 @@ export default class Charts extends React.Component {
                     </View>
                 </View>
                 <View style={styles.section2}>
-                    <TouchableOpacity style={styles.box} onPress={this.hendlerClick}>
+                    <TouchableOpacity style={styles.box} onPress={() => this.hendlerClick('convex')}>
                             <LineChart
                                 style={{ height: 150 }}
                                 data={convex}
@@ -72,7 +73,7 @@ export default class Charts extends React.Component {
                             >
                             </LineChart>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box} onPress={this.hendlerClick}>
+                    <TouchableOpacity style={styles.box} onPress={() => this.hendlerClick('smooth')}>
                             <LineChart
                                 style={{ height: 150 }}
                                 data={smooth}
@@ -85,7 +86,7 @@ export default class Charts extends React.Component {
                             >
                             </LineChart>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box} onPress={this.hendlerClick}>
+                    <TouchableOpacity style={styles.box} onPress={() => this.hendlerClick('down')}>
                             <LineChart
                                 style={{ height: 150 }}
                                 data={down}
@@ -98,7 +99,7 @@ export default class Charts extends React.Component {
                             >
                             </LineChart>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box} onPress={this.hendlerClick}>
+                    <TouchableOpacity style={styles.box} onPress={() => this.hendlerClick('concave')}>
                             <LineChart
                                 style={{ height: 150 }}
                                 data={concave}
@@ -175,6 +176,15 @@ const styles = StyleSheet.create({
       },
       closeButton: {
         marginTop: 10,
+        borderRadius: 10,
+      },
+      textModal: {
+        color: 'black',
+        fontSize: 12,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        marginBottom: 20,
       },
      
 });

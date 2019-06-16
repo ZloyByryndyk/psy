@@ -65,13 +65,6 @@ export default class test_tepp extends React.Component {
         const hoverStyle = styles.hover;
         
         if (!this.state.isStarted) return commonStyle;
-        
-        // if (index*5 <= 30 - this.state.globalTimer) {
-        // hoverStyle;
-        // } else {
-        // commonStyle;
-        // }
-        // return commonStyle;
 
         if(this.state.curentSpinner===index){
             return hoverStyle
@@ -101,7 +94,7 @@ export default class test_tepp extends React.Component {
                 </Text>
                 <View style={styles.box1}>
                     {numbers.map((number, index) => (
-                        <Text style={this.getStyle(index)}>
+                        <Text style={this.getStyle(index)} key={index}>
                             {number}
                         </Text>
                     ))}
@@ -163,7 +156,7 @@ const styles = StyleSheet.create({
         height: 50,
     },
     hover: {
-        backgroundColor: 'red',
+        backgroundColor: 'green',
         padding: 10,
         color: 'white',
         borderColor: 'black',

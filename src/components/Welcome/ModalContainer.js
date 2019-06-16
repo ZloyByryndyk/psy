@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, AppRegistry, TextInput, Modal, Text, TouchableHighlight, Alert} from 'react-native';
 import { Button } from 'react-native-elements'
 // Компоненты которые мы импортируем
-import textJson from '../../text/textJson'
+import text from '../../text/text'
 
 export default class ModalContainer extends React.Component {
 // методы которые используются в теле проекта
@@ -15,10 +15,6 @@ export default class ModalContainer extends React.Component {
     }
 
     render() {
-        let qwe = [];
-        textJson.modalContentText.forEach((element, i) => {
-            qwe.push(<Text style={styles.text} key={i}>{element}</Text>);
-        });
         
         return (
     <View>
@@ -36,7 +32,8 @@ export default class ModalContainer extends React.Component {
             onRequestClose={() => {}}
             >        
             <View style={styles.mainModal}>    
-                <View style={styles.textModal}>{qwe}
+                <View style={styles.textModal}>
+                    <Text style={styles.text}>{text.firstObj.modalContentText}</Text>
                 </View>
                 <Button onPress={() => {
                     this.setModalVisible(false);
