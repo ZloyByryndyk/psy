@@ -3,12 +3,12 @@ import { Text, StyleSheet, View, Image, AsyncStorage, ScrollView } from 'react-n
 import { Button } from 'react-native-elements';
 import text from '../../../text/text';
 
-export default class Interpretator extends React.Component {
-    state = { graphId: null }
+export default class Interpretation_geo extends React.Component {
+    state = { geoId: null }
 
     async componentDidMount() {
-      const Id = await AsyncStorage.getItem('graphId');
-      this.setState({ graphId: Id });
+      const Id = await AsyncStorage.getItem('geo_id');
+      this.setState({ geoId: Id });
     }
 
     hendlerClick = () => {
@@ -26,7 +26,7 @@ export default class Interpretator extends React.Component {
           <View style={styles.box}>
             <View style={styles.container}>
               <Text style={styles.text}>
-                {text.Interpretation_tepp[this.state.graphId]}
+                {text.Interpretation_geo[this.state.geoId]}
               </Text>
               <Button
                 buttonStyle={styles.close}
